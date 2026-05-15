@@ -21,18 +21,26 @@ class SwitchAccessory {
       period: config.period,
       state: config.default === undefined ? false : config.default
     };
+    this._state = defaultValue;
 
     storage.retrieve(defaultValue, (error, value) => {
       this._state = value;
+      this._switchService.getCharacteristic(Characteristic.On)
+        .updateValue(this._state.state);
+      this._programService.getCharacteristic(Characteristic.PeriodInSeconds)
+        .updateValue(this._state.period);
+      this._programService.getCharacteristic(Characteristic.AutomaticOff)
+        .updateValue(this._state.autoOff);
+
+      if (this._state.state) {
+        this._startTimer();
+      }
     });
 
 
     this._services = this.createServices();
     this._timer = undefined;
 
-    if (this._state.state) {
-      this._startTimer();
-    }
   }
 
   getServices() {
@@ -68,16 +76,16 @@ class SwitchAccessory {
   }
 
   getSwitchProgramService() {
-    const program = new Service.SwitchProgram(this.name);
-    program.getCharacteristic(Characteristic.PeriodInSeconds)
+    this._programService = new Service.SwitchProgram(this.name);
+    this._programService.getCharacteristic(Characteristic.PeriodInSeconds)
       .on('set', this._setPeriod.bind(this))
       .updateValue(this._state.period);
 
-    program.getCharacteristic(Characteristic.AutomaticOff)
+    this._programService.getCharacteristic(Characteristic.AutomaticOff)
       .on('set', this._setAutoOff.bind(this))
       .updateValue(this._state.autoOff);
 
-    return program;
+    return this._programService;
   }
 
   getMotionSensorService() {

@@ -41,9 +41,16 @@ class SolarClockAccessory {
       defaultValue.period = i;
       break;
     }
+    this._state = defaultValue;
 
     storage.retrieve(defaultValue, (error, value) => {
       this._state = value;
+      this._solarService.getCharacteristic(Characteristic.SolarPeriod)
+        .updateValue(this._state.period);
+      this._solarService.getCharacteristic(Characteristic.SolarMinutesOffset)
+        .updateValue(this._state.offset);
+      this._switchService.getCharacteristic(Characteristic.On)
+        .updateValue(this._state.enabled);
 
       if (this._state.enabled) {
         this._scheduleSolarClock();

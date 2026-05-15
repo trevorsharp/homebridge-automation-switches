@@ -27,9 +27,13 @@ class LockMechanismAccessory {
     const defaultValue = {
       targetState: this._pickDefault(config.default)
     };
+    this._state = defaultValue;
 
     storage.retrieve(defaultValue, (error, value) => {
       this._state = value;
+      this._lockMechanismService.getCharacteristic(Characteristic.LockTargetState)
+        .updateValue(this._state.targetState);
+      this._updateCurrentState();
     });
 
     this._services = this.createServices();

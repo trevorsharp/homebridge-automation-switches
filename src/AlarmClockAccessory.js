@@ -28,9 +28,16 @@ class AlarmClockAccessory {
       minute: config.minute || 0,
       enabled: config.enabled === undefined ? false : config.enabled
     };
+    this._state = defaultValue;
 
     storage.retrieve(defaultValue, (error, value) => {
       this._state = value;
+      this._clockService.getCharacteristic(Characteristic.ClockHour)
+        .updateValue(this._state.hour);
+      this._clockService.getCharacteristic(Characteristic.ClockMinute)
+        .updateValue(this._state.minute);
+      this._switchService.getCharacteristic(Characteristic.On)
+        .updateValue(this._state.enabled);
 
       if (this._state.enabled) {
         this._scheduleAlarmClock();

@@ -37,6 +37,8 @@ class SecuritySystemAccessory {
     for (let zoneLabel of this.zones) {
       defaultValue.zonesAlarm[zoneLabel] = false;
     }
+    this._state = defaultValue;
+    this._zoneSwitchServices = {};
 
     storage.retrieve(defaultValue, (error, value) => {
 
@@ -52,6 +54,13 @@ class SecuritySystemAccessory {
       storage.store(value, () => true);
 
       this._state = value;
+      this._securitySystemService.getCharacteristic(Characteristic.SecuritySystemTargetState)
+        .updateValue(this._state.targetState);
+      for (let zoneLabel of this.zones) {
+        this._zoneSwitchServices[zoneLabel].getCharacteristic(Characteristic.On)
+          .updateValue(this._state.zonesAlarm[zoneLabel] || false);
+      }
+      this._updateCurrentState();
     });
 
     this._services = this.createServices();
@@ -135,6 +144,7 @@ class SecuritySystemAccessory {
         .on('set', (value, callback) => this._setAlarm(zoneLabel, value, callback))
         .updateValue(this._state.zonesAlarm[zoneLabel] || false);
 
+      this._zoneSwitchServices[zoneLabel] = zoneSwitch;
       services.push(zoneSwitch);
     }
 

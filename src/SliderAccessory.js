@@ -19,9 +19,12 @@ class SliderAccessory {
     const defaultValue = {
       value: config.default === undefined ? false : config.default
     };
+    this._state = defaultValue;
 
     storage.retrieve(defaultValue, (error, value) => {
       this._state = value;
+      this._sliderService.getCharacteristic(Characteristic.SliderValue)
+        .updateValue(this._state.value);
     });
 
     this._services = this.createServices();

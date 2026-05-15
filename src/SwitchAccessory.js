@@ -19,9 +19,12 @@ class SwitchAccessory {
     const defaultValue = {
       state: config.default === undefined ? false : config.default
     };
+    this._state = defaultValue;
 
     storage.retrieve(defaultValue, (error, value) => {
       this._state = value;
+      this._switchService.getCharacteristic(Characteristic.On)
+        .updateValue(this._state.state);
     });
 
     this._services = this.createServices();
