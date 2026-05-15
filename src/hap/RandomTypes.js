@@ -6,6 +6,8 @@ module.exports = {
   registerWith: function (hap) {
 
     const Characteristic = hap.Characteristic;
+    const Formats = hap.Formats;
+    const Perms = hap.Perms;
 
     ///////////////////////////////////////////////////////////////////////////////////////////
     // Random: value
@@ -14,10 +16,10 @@ module.exports = {
       Characteristic.call(this, 'Value', Characteristic.RandomValue.UUID);
 
       this.setProps({
-        format: Characteristic.Formats.INT,
+        format: Formats.INT,
         minValue: 0,
         maxValue: 10000,
-        perms: [Characteristic.Perms.READ, Characteristic.Perms.NOTIFY],
+        perms: [Perms.READ, Perms.NOTIFY],
       });
 
       this.value = this.getDefaultValue();

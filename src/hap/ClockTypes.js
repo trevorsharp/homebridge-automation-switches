@@ -6,6 +6,8 @@ module.exports = {
   registerWith: function (hap) {
 
     const Characteristic = hap.Characteristic;
+    const Formats = hap.Formats;
+    const Perms = hap.Perms;
     const Service = hap.Service;
 
     ///////////////////////////////////////////////////////////////////////////////////////////
@@ -15,10 +17,10 @@ module.exports = {
       Characteristic.call(this, 'Hour', Characteristic.ClockHour.UUID);
 
       this.setProps({
-        format: Characteristic.Formats.INT,
+        format: Formats.INT,
         minValue: 0,
         maxValue: 23,
-        perms: [Characteristic.Perms.READ, Characteristic.Perms.WRITE],
+        perms: [Perms.READ, Perms.WRITE],
       });
 
       this.value = this.getDefaultValue();
@@ -33,10 +35,10 @@ module.exports = {
       Characteristic.call(this, 'Minute', Characteristic.ClockMinute.UUID);
 
       this.setProps({
-        format: Characteristic.Formats.INT,
+        format: Formats.INT,
         minValue: 0,
         maxValue: 59,
-        perms: [Characteristic.Perms.READ, Characteristic.Perms.WRITE],
+        perms: [Perms.READ, Perms.WRITE],
       });
 
       this.value = this.getDefaultValue();

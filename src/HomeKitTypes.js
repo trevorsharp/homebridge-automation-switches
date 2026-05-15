@@ -6,15 +6,18 @@ module.exports = {
   registerWith: function (hap) {
 
     const Characteristic = hap.Characteristic;
+    const Formats = hap.Formats;
+    const Perms = hap.Perms;
     const Service = hap.Service;
+    const Units = hap.Units;
 
 
     Characteristic.AutomaticOff = function () {
       Characteristic.call(this, 'Automatic Off', '72227266-CA42-4442-AB84-0A7D55A0F08D');
 
       this.setProps({
-        format: Characteristic.Formats.BOOL,
-        perms: [Characteristic.Perms.READ, Characteristic.Perms.WRITE],
+        format: Formats.BOOL,
+        perms: [Perms.READ, Perms.WRITE],
       });
 
       this.value = this.getDefaultValue();
@@ -26,9 +29,9 @@ module.exports = {
       Characteristic.call(this, 'Period', 'B469181F-D796-46B4-8D99-5FBE4BA9DC9C');
 
       this.setProps({
-        format: Characteristic.Formats.INT,
-        unit: Characteristic.Units.SECONDS,
-        perms: [Characteristic.Perms.READ, Characteristic.Perms.WRITE],
+        format: Formats.INT,
+        unit: Units.SECONDS,
+        perms: [Perms.READ, Perms.WRITE],
         minValue: 1,
         maxValue: 3600,
       });
@@ -56,8 +59,8 @@ module.exports = {
       Characteristic.call(this, 'Value', '38AFD9A5-A0C5-42D9-ACD0-1BE08D4FF3F7');
 
       this.setProps({
-        format: Characteristic.Formats.INT,
-        perms: [Characteristic.Perms.READ, Characteristic.Perms.WRITE],
+        format: Formats.INT,
+        perms: [Perms.READ, Perms.WRITE],
       });
 
       this.value = this.getDefaultValue();

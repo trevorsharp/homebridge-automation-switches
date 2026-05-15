@@ -6,7 +6,10 @@ module.exports = {
   registerWith: function (hap) {
 
     const Characteristic = hap.Characteristic;
+    const Formats = hap.Formats;
+    const Perms = hap.Perms;
     const Service = hap.Service;
+    const Units = hap.Units;
 
     ///////////////////////////////////////////////////////////////////////////////////////////
     // Solar: Latitude
@@ -15,12 +18,12 @@ module.exports = {
       Characteristic.call(this, 'Latitude', Characteristic.SolarLatitude.UUID);
 
       this.setProps({
-        format: Characteristic.Formats.FLOAT,
-        unit: Characteristic.Units.ARC_DEGREE,
+        format: Formats.FLOAT,
+        unit: Units.ARC_DEGREE,
         minValue: -90,
         maxValue: 90,
         minStep: 0.000001,
-        perms: [Characteristic.Perms.READ],
+        perms: [Perms.READ],
       });
 
       this.value = this.getDefaultValue();
@@ -35,12 +38,12 @@ module.exports = {
       Characteristic.call(this, 'Longitude', Characteristic.SolarLongitude.UUID);
 
       this.setProps({
-        format: Characteristic.Formats.FLOAT,
-        unit: Characteristic.Units.ARC_DEGREE,
+        format: Formats.FLOAT,
+        unit: Units.ARC_DEGREE,
         minValue: -180,
         maxValue: 180,
         minStep: 0.000001,
-        perms: [Characteristic.Perms.READ],
+        perms: [Perms.READ],
       });
 
       this.value = this.getDefaultValue();
@@ -55,12 +58,12 @@ module.exports = {
       Characteristic.call(this, 'Offset', Characteristic.SolarMinutesOffset.UUID);
 
       this.setProps({
-        format: Characteristic.Formats.INT,
+        format: Formats.INT,
         unit: 'mins',
         minValue: -15,
         maxValue: 15,
         minStep: 1,
-        perms: [Characteristic.Perms.READ, Characteristic.Perms.WRITE],
+        perms: [Perms.READ, Perms.WRITE],
       });
 
       this.value = this.getDefaultValue();
@@ -82,11 +85,11 @@ module.exports = {
       Characteristic.call(this, 'Period', Characteristic.SolarPeriod.UUID);
 
       this.setProps({
-        format: Characteristic.Formats.UINT8,
+        format: Formats.UINT8,
         minValue: 0,
         maxValue: SolarPeriods.length - 1,
         minStep: 1,
-        perms: [Characteristic.Perms.READ, Characteristic.Perms.WRITE, Characteristic.Perms.NOTIFY],
+        perms: [Perms.READ, Perms.WRITE, Perms.NOTIFY],
       });
 
       this.value = this.getDefaultValue();
