@@ -2,7 +2,7 @@
 
 const clone = require('clone');
 
-let Accessory, Characteristic, Service;
+let Characteristic, Service;
 
 const LockMechanismStates = [
   'Unsecured',
@@ -15,7 +15,6 @@ const LockMechanismStates = [
 class LockMechanismAccessory {
 
   constructor(api, log, config, storage) {
-    Accessory = api.hap.Accessory;
     Characteristic = api.hap.Characteristic;
     Service = api.hap.Service;
 
@@ -55,7 +54,6 @@ class LockMechanismAccessory {
   createServices() {
     return [
       this.getAccessoryInformationService(),
-      this.getBridgingStateService(),
       this.getLockMechanismService()
     ];
   }
@@ -68,14 +66,6 @@ class LockMechanismAccessory {
       .setCharacteristic(Characteristic.SerialNumber, this._config.serialNumber)
       .setCharacteristic(Characteristic.FirmwareRevision, this._config.version)
       .setCharacteristic(Characteristic.HardwareRevision, this._config.version);
-  }
-
-  getBridgingStateService() {
-    return new Service.BridgingState()
-      .setCharacteristic(Characteristic.Reachable, true)
-      .setCharacteristic(Characteristic.LinkQuality, 4)
-      .setCharacteristic(Characteristic.AccessoryIdentifier, this.name)
-      .setCharacteristic(Characteristic.Category, Accessory.Categories.DOOR_LOCK);
   }
 
   getLockMechanismService() {

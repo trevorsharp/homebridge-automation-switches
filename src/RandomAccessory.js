@@ -1,11 +1,10 @@
 'use strict';
 
-let Accessory, Characteristic, Service;
+let Characteristic, Service;
 
 class RandomAccessory {
 
   constructor(api, log, config) {
-    Accessory = api.hap.Accessory;
     Characteristic = api.hap.Characteristic;
     Service = api.hap.Service;
 
@@ -29,7 +28,6 @@ class RandomAccessory {
   createServices() {
     return [
       this.getAccessoryInformationService(),
-      this.getBridgingStateService(),
       this.getSwitchService(),
     ];
   }
@@ -42,14 +40,6 @@ class RandomAccessory {
       .setCharacteristic(Characteristic.SerialNumber, this.config.serialNumber)
       .setCharacteristic(Characteristic.FirmwareRevision, this.config.version)
       .setCharacteristic(Characteristic.HardwareRevision, this.config.version);
-  }
-
-  getBridgingStateService() {
-    return new Service.BridgingState()
-      .setCharacteristic(Characteristic.Reachable, true)
-      .setCharacteristic(Characteristic.LinkQuality, 4)
-      .setCharacteristic(Characteristic.AccessoryIdentifier, this.name)
-      .setCharacteristic(Characteristic.Category, Accessory.Categories.SWITCH);
   }
 
   getSwitchService() {

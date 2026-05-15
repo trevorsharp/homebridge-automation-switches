@@ -2,12 +2,11 @@
 
 const clone = require('clone');
 
-let Accessory, Characteristic, Service;
+let Characteristic, Service;
 
 class SwitchAccessory {
 
   constructor(api, log, config, storage) {
-    Accessory = api.hap.Accessory;
     Characteristic = api.hap.Characteristic;
     Service = api.hap.Service;
 
@@ -35,7 +34,6 @@ class SwitchAccessory {
   createServices() {
     return [
       this.getAccessoryInformationService(),
-      this.getBridgingStateService(),
       this.getSwitchService()
     ];
   }
@@ -48,14 +46,6 @@ class SwitchAccessory {
       .setCharacteristic(Characteristic.SerialNumber, this._config.serialNumber)
       .setCharacteristic(Characteristic.FirmwareRevision, this._config.version)
       .setCharacteristic(Characteristic.HardwareRevision, this._config.version);
-  }
-
-  getBridgingStateService() {
-    return new Service.BridgingState()
-      .setCharacteristic(Characteristic.Reachable, true)
-      .setCharacteristic(Characteristic.LinkQuality, 4)
-      .setCharacteristic(Characteristic.AccessoryIdentifier, this.name)
-      .setCharacteristic(Characteristic.Category, Accessory.Categories.SWITCH);
   }
 
   getSwitchService() {

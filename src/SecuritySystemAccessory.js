@@ -2,7 +2,7 @@
 
 const clone = require('clone');
 
-let Accessory, Characteristic, Service;
+let Characteristic, Service;
 
 const SecuritySystemStates = [
   'Armed - Stay',
@@ -15,7 +15,6 @@ const SecuritySystemStates = [
 class SecuritySystemAccessory {
 
   constructor(api, log, config, storage) {
-    Accessory = api.hap.Accessory;
     Characteristic = api.hap.Characteristic;
     Service = api.hap.Service;
 
@@ -77,7 +76,6 @@ class SecuritySystemAccessory {
   createServices() {
     return [
       this.getAccessoryInformationService(),
-      this.getBridgingStateService(),
       this.getSecuritySystemService(),
       ...this.getArmSwitchServices(),
       ...this.getZoneServices(),
@@ -111,14 +109,6 @@ class SecuritySystemAccessory {
       .setCharacteristic(Characteristic.SerialNumber, this._config.serialNumber)
       .setCharacteristic(Characteristic.FirmwareRevision, this._config.version)
       .setCharacteristic(Characteristic.HardwareRevision, this._config.version);
-  }
-
-  getBridgingStateService() {
-    return new Service.BridgingState()
-      .setCharacteristic(Characteristic.Reachable, true)
-      .setCharacteristic(Characteristic.LinkQuality, 4)
-      .setCharacteristic(Characteristic.AccessoryIdentifier, this.name)
-      .setCharacteristic(Characteristic.Category, Accessory.Categories.SECURITY_SYSTEM);
   }
 
   getSecuritySystemService() {
